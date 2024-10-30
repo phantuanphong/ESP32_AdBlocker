@@ -90,6 +90,7 @@
       }          
     
       .tab {
+        border-radius: var(--buttonQuart);
         display: flex;
         overflow: hidden;
         background: var(--menuBackground);
@@ -126,21 +127,28 @@
       
       .grid-cols3 {
         grid-template-columns: calc(var(--buttonSize) * 14) calc(var(--buttonSize) * 12) calc(var(--buttonSize) * 12);
+        gap: var(--buttonSize);
       }
-      
+
       .grid-cols4 {
-        grid-template-columns: calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10)
+          grid-template-columns: calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10);
+          gap: var(--buttonSize);
       }
-      
-      .grid-cols3, .grid-cols4 {
-        display: grid;
-        background: none;
-        text-align: center;
-        font-size: var(--inputSize);
-        fill: var(--buttonLabel);
-        border: 0px solid var(--itemBorder);
-        dominant-baseline: middle;
-        text-anchor: middle;
+
+      .grid-cols5 {
+          grid-template-columns: calc(var(--buttonSize) * 8) calc(var(--buttonSize) * 8) calc(var(--buttonSize) * 8) calc(var(--buttonSize) * 8) calc(var(--buttonSize) * 8);
+          gap: var(--buttonSize);
+      }
+
+      .grid-cols3, .grid-cols4, .grid-cols5 {
+          display: grid;
+          background: none;
+          text-align: center;
+          font-size: var(--inputSize);
+          fill: var(--buttonLabel);
+          border: 0px solid var(--itemBorder);
+          dominant-baseline: middle;
+          text-anchor: middle;
       }
       
       .cfgTitle {
@@ -284,37 +292,47 @@
       /* checkbox slider */
 
       /* Hide the default checkbox */
+      .switch {
+        display: inline-flex;  /* Use flexbox for alignment */
+        align-items: center;   /* Center items vertically */
+      }
+
       .switch input[type="checkbox"] {
-        display: none;
+          display: none;  /* Hide the default checkbox */
       }
 
       /* static part */
       .switch .slider {
-        width: calc(var(--buttonSize) * 3);  
-        height: var(--buttonSize);
-        top: calc(var(--buttonQuart) / 2);
-        background: var(--itemInactive);
-        position: relative;
-        display: inline-block;
-        border-radius: var(--buttonSize);
-      }
-      .switch input[type="checkbox"]:checked + .slider {
-        background-color: var(--buttonActive);
+          width: calc(var(--buttonSize) * 2.6);  /* Slightly reduced width for better proportion */
+          height: calc(var(--buttonSize) * 1.4);  /* Increased height for better clickable area */
+          background: var(--itemInactive);
+          position: relative;
+          display: inline-block;
+          border-radius: calc(var(--buttonSize) * 1.4);  /* Match height for perfect circle */
+          cursor: pointer;  /* Added cursor pointer for better UX */
+          transition: background-color 0.3s;  /* Smooth transition for background */
       }
 
-      /* moving part */
-      .switch .slider::before {
-        content: "";
-        height: var(--buttonSize);
-        width: var(--buttonSize);
-        background: var(--inputBackground);
-        position: absolute;
-        left: var(--buttonQuart);
-        border-radius: var(--buttonSize);
-        transition: transform 0.4s;
+      .switch input[type="checkbox"]:checked + .slider {
+          background-color: var(--buttonActive);
       }
+
+  /* moving part */
+      .switch .slider::before {
+          content: "";
+          height: calc(var(--buttonSize) * 1.2);  /* Slightly smaller than container */
+          width: calc(var(--buttonSize) * 1.2);
+          background: var(--inputBackground);
+          position: absolute;
+          top: 50%;  /* Center vertically */
+          left: calc(var(--buttonQuart) * 2);  /* Adjusted starting position */
+          border-radius: 50%;  /* Perfect circle */
+          transition: transform 0.3s ease;  /* Smoother transition */
+          transform: translate(-50%, -50%);  /* Center horizontally and vertically */
+      }
+
       .switch input[type="checkbox"]:checked + .slider::before {
-        transform: translateX(calc(var(--buttonSize)*1.5));
+          transform: translate(calc(var(--buttonSize) ), -50%);  /* Adjusted travel distance */
       }
 
       
@@ -394,10 +412,10 @@
   
   <body>
     <div class="tab fixed">
-      <button class="tablinks active" name="AdBlocker" id="mainTab">AdBlocker</button>
-      <button class="tablinks" name="ShowLog">Show Log</button>
-      <button class="tablinks" name="EditConfig">Edit Config</button>
-      <a href="/web?OTA.htm"><button class="tablinks">OTA Upload</button></a>
+      <button class="tablinks active" name="AdBlocker" id="mainTab">Main</button>
+      <button class="tablinks" name="ShowLog">Monitor</button>
+      <button class="tablinks" name="EditConfig">Config</button>
+      <a href="/web?OTA.htm"><button class="tablinks">OTA</button></a>
     </div>
     <br><br><br>
     <div id="AdBlocker" class="tabcontent" style="display:block">
@@ -408,7 +426,7 @@
 
     <div id="ShowLog" class="tabcontent">
       <br>
-      <div class="grid-cols4">
+      <div class="grid-cols5">
         <div class="input-group" style="grid-column: span 2">
           <fieldset> 
           <legend id="selectLog">Select Log</legend> 
@@ -427,7 +445,7 @@
             <label title="Outputs additional information to log" class="slider" for="dbgVerbose"></label>
           </div>
         </div>
-        <div style="grid-column: span 4"><br></div>
+        <div style="grid-column: span 5"><br></div>
         <div>
           <svg>
             <rect class="buttonRect" tabindex="0"/>
@@ -443,13 +461,7 @@
         <div>
           <svg>
             <rect class="buttonRect" tabindex="0"/>
-            <text id="save" class="midText">Save</text>
-          </svg>
-        </div>
-        <div>
-          <svg>
-            <rect class="buttonRect" tabindex="0"/>
-            <text id="reset" class="midText">Reboot ESP</text>
+            <text id="addBlockDomain" class="midText">Add Domain</text>
           </svg>
         </div>
       </div>
@@ -466,7 +478,7 @@
         <div>
           <svg class="svgCols">
             <rect class="buttonRect" tabindex="0"/>
-            <text id="reset" class="midText">Reboot ESP</text>
+            <text id="reset" class="midText">Reboot</text>
           </svg>
         </div>
         <div>
@@ -484,8 +496,6 @@
         <div class="cfgTitle">
           <br>
           <div class="header">Settings</div>
-          <div class="subheader">Press a button to view or modify settings (changed values are not validated)</div>
-          <div class="subheader">Press Save button to make changes permanent</div>
           <br>
         </div>
         <div>
@@ -538,6 +548,7 @@
           else if (key == "refreshLog") getLog();
           else if (key == "logType") { logType = value; sendControl(key, value); return; }
           else if (key == "reset") saveChanges();
+          else if (key == "addBlockDomain") addBlockDomain();
           else if (key == "refreshVal") refreshInterval = value * 1000; 
           else if (key == "clockUTC") { appClock = value; checkTime(value); }
           else if (key == "settings") getConfig("01");
@@ -569,7 +580,7 @@
       const doCustomSync = false;
       const doHeartbeat = false;
 
-      const scriptFiles = ['/web?common.js', 'C:/MyStuff/Arduino/CommonMaster/Latest/common.js']; 
+      const scriptFiles = ['/web?common.js', '/Users/phongphan/Project/other/ESP32_AdBlocker/data/common.js']; 
       for (let i = 0; i < scriptFiles.length; i++) {
         const scriptElement = document.createElement('script');
         scriptElement.src = scriptFiles[i];

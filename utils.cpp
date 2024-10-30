@@ -429,7 +429,7 @@ void remoteServerReset() {
 /************************** NTP  **************************/
 
 // Needs to be a time zone string from: https://raw.githubusercontent.com/nayarsystems/posix_tz_db/master/zones.csv
-char timezone[FILE_NAME_LEN] = "GMT0";
+char timezone[FILE_NAME_LEN] = "<+07>-7";
 char ntpServer[MAX_HOST_LEN] = "pool.ntp.org";
 uint8_t alarmHour = 1;
 
@@ -789,6 +789,10 @@ static void remote_log_init_SD() {
     LOG_INF("Opened SD file for logging");
   }
 #endif
+}
+
+void add_block_domain(char* domain){
+  addBlockDomain(domain);
 }
 
 void reset_log() {

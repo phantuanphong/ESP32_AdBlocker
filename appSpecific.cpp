@@ -54,6 +54,19 @@ uint32_t binarySearch(const char* searchStr, bool isInsert = false) {
   return isInsert ? ptr : 0; // end of search
 }
 
+
+void addBlockDomain(char* domain){
+  if (domain != NULL) {
+    // write processed line to storage
+    int wwwOffset = (strncmp(domain, "www.", 4) == 0) ? 4 : 0;  // remove any leading "www."
+    char* domName = domain + wwwOffset;
+    size_t domLen = strlen(domain) - wwwOffset;
+    if (domLen < maxDomLen) addDomain(domName, domLen);
+    LOG_INF("Add domain: %s", domain);
+  }  
+}
+
+
 void addDomain(const char* domainStr, size_t domLen) {
   // domain names stored linearly in 'storage' in order received
   // pointer to each domain stored in 'ptrs' sorted alphabetically by corresponding domain
@@ -363,7 +376,7 @@ AP_ip~~0~T~AP IP Address if not 192.168.4.1
 AP_sn~~0~T~AP subnet
 AP_gw~~0~T~AP gateway
 allowAP~2~0~C~Allow simultaneous AP
-timezone~GMT0~1~T~Timezone string: tinyurl.com/TZstring
+timezone~<+07>-7~1~T~Timezone string: tinyurl.com/TZstring
 logType~0~99~N~Output log selection
 Auth_Name~~0~T~Optional user name for web page login
 Auth_Pass~~0~T~Optional user name for web page password

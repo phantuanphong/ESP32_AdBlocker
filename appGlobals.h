@@ -51,7 +51,7 @@
 #define INCLUDE_MQTT false    // mqtt.cpp
 #define INCLUDE_TGRAM false   // telegram.cpp
 #define INCLUDE_CERTS false   // certificates.cpp (https and server certificate checking)
-#define INCLUDE_WEBDAV true   // webDav.cpp (WebDAV protocol)
+#define INCLUDE_WEBDAV false   // webDav.cpp (WebDAV protocol)
 
 #define IS_IO_EXTENDER false // must be false except for IO_Extender
 #define EXTPIN 100
