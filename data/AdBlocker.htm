@@ -94,6 +94,11 @@
         display: flex;
         overflow: hidden;
         background: var(--menuBackground);
+        width: 100vw; /* Full viewport width */
+        position: relative; /* Ensure positioning context */
+        left: 50%; /* Center the tab if it has margins */
+        right: 50%; /* Center the tab if it has margins */
+        margin-left: -50vw; /* Pull it back to full width */
       }
 
       .tab button {
@@ -105,6 +110,7 @@
         padding: var(--buttonHalf);
         transition: 0.3s;
         font-size: calc(var(--buttonSize) * 1.1);
+        flex: 1; /* Makes buttons expand equally */
       }
 
       .tab button.active {
@@ -140,7 +146,12 @@
           gap: var(--buttonSize);
       }
 
-      .grid-cols3, .grid-cols4, .grid-cols5 {
+      .grid-cols2 {
+          grid-template-columns: calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10);
+          gap: var(--buttonSize);
+      }
+
+      .grid-cols3, .grid-cols4, .grid-cols5, .grid-cols2 {
           display: grid;
           background: none;
           text-align: center;
@@ -338,7 +349,7 @@
       
       #appLog{
         height:50vh;
-        width:90%;
+        width:100%;
         border:2px solid var(--itemBorder);
         overflow:auto;
         background: var(--inputBackground);
@@ -415,7 +426,7 @@
       <button class="tablinks active" name="AdBlocker" id="mainTab">Main</button>
       <button class="tablinks" name="ShowLog">Monitor</button>
       <button class="tablinks" name="EditConfig">Config</button>
-      <a href="/web?OTA.htm"><button class="tablinks">OTA</button></a>
+      <a href="/web?OTA.htm"><button class="tablinks">Update</button></a>
     </div>
     <br><br><br>
     <div id="AdBlocker" class="tabcontent" style="display:block">
@@ -426,7 +437,7 @@
 
     <div id="ShowLog" class="tabcontent">
       <br>
-      <div class="grid-cols5">
+      <div>
         <div class="input-group" style="grid-column: span 2">
           <fieldset> 
           <legend id="selectLog">Select Log</legend> 
@@ -436,30 +447,41 @@
             <label title="Display Websocket log" for="websock">&nbsp;Websocket</label>
             <input class="local" id="websock" type="radio" name="logType" value="1">
           </div>
+          <div class="input-group" id="dbg-group">
+            <label for="dbgVerbose" title="Set verbose logging">Verbose:</label>
+            <div class="switch">
+              <input id="dbgVerbose" type="checkbox">
+              <label title="Outputs additional information to log" class="slider" for="dbgVerbose"></label>
+            </div>
+          </div>
           </fieldset>
         </div>
-        <div class="input-group" id="dbg-group" style="align-items: center; grid-column: span 2">
-          <label for="dbgVerbose" class="header" title="Set verbose logging">Verbose:</label>
-          <div class="switch">
-            <input id="dbgVerbose" type="checkbox">
-            <label title="Outputs additional information to log" class="slider" for="dbgVerbose"></label>
-          </div>
-        </div>
-        <div style="grid-column: span 5"><br></div>
-        <div>
-          <svg>
-            <rect class="buttonRect" tabindex="0"/>
-            <text class="local" id="refreshLog">Refresh Log</text>
-          </svg>
-        </div>
-        <div>
-          <svg>
-            <rect class="buttonRect" tabindex="0"/>
-            <text class="local" id="clearLog">Clear Log</text>
-          </svg>
-        </div>
+        <br>
+        <br>
+        <br>
+        <table class="grid-cols2">
+          <tbody>
+            <tr>
+              <td>
+                <div>
+                  <svg>
+                    <rect class="buttonRect" tabindex="0"/>
+                    <text class="local" id="refreshLog">Refresh Log</text>
+                  </svg>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <svg>
+                    <rect class="buttonRect" tabindex="0"/>
+                    <text class="local" id="clearLog">Clear Log</text>
+                  </svg>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <br>
       <div id="appLog"></div>
       <br>
     </div>
@@ -542,7 +564,6 @@
           else if (key == "refreshLog") getLog();
           else if (key == "logType") { logType = value; sendControl(key, value); return; }
           else if (key == "reset") saveChanges();
-          else if (key == "addBlockDomain") addBlockDomain();
           else if (key == "refreshVal") refreshInterval = value * 1000; 
           else if (key == "clockUTC") { appClock = value; checkTime(value); }
           else if (key == "settings") getConfig("01");
@@ -574,7 +595,7 @@
       const doCustomSync = false;
       const doHeartbeat = false;
 
-      const scriptFiles = ['/web?common.js', '/Users/phongphan/Project/other/ESP32_AdBlocker/data/common.js']; 
+      const scriptFiles = ['/web?common.js', '/Users/phongphan/Project/other/ESP32_AdBlocker/data/common.js', 'E:/PROJECT/Arduino/ESP32_AdBlocker/data/common.js']; 
       for (let i = 0; i < scriptFiles.length; i++) {
         const scriptElement = document.createElement('script');
         scriptElement.src = scriptFiles[i];
