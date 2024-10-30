@@ -201,7 +201,6 @@ bool sendTgramFile(const char* fileName, const char* contentType, const char* ca
 void tgramAlert(const char* subject, const char* message);
 // externalHeartbeat.cpp
 void sendExternalHeartbeat();
-void addBlockDomain(char* domain);
 /******************** Global utility declarations *******************/
 
 extern char AP_SSID[];

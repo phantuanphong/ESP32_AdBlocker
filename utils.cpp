@@ -791,10 +791,6 @@ static void remote_log_init_SD() {
 #endif
 }
 
-void add_block_domain(char* domain){
-  addBlockDomain(domain);
-}
-
 void reset_log() {
   if (logType == 0) ramLogClear();
   if (logType == 2) {

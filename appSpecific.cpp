@@ -55,18 +55,6 @@ uint32_t binarySearch(const char* searchStr, bool isInsert = false) {
 }
 
 
-void addBlockDomain(char* domain){
-  if (domain != NULL) {
-    // write processed line to storage
-    int wwwOffset = (strncmp(domain, "www.", 4) == 0) ? 4 : 0;  // remove any leading "www."
-    char* domName = domain + wwwOffset;
-    size_t domLen = strlen(domain) - wwwOffset;
-    if (domLen < maxDomLen) addDomain(domName, domLen);
-    LOG_INF("Add domain: %s", domain);
-  }  
-}
-
-
 void addDomain(const char* domainStr, size_t domLen) {
   // domain names stored linearly in 'storage' in order received
   // pointer to each domain stored in 'ptrs' sorted alphabetically by corresponding domain

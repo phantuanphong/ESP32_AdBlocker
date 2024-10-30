@@ -397,29 +397,6 @@
           sendControl('timezone', value);
           return false;
         }
-
-        function addBlockDomain() {
-          // Show dialog prompt to get domain input
-          const value = prompt('Enter domain to block:', '');
-          
-          // Check if user clicked Cancel or entered empty value
-          if (value === null || value.trim() === '') {
-              return false;
-          }
-      
-          try {
-              // Send the domain value to the control function
-              sendControl('addBlockDomain', value.trim());
-              
-              // Optional: Show success message
-              alert('Domain added successfully');
-          } catch (error) {
-              console.error('Error adding domain:', error);
-              alert('Failed to add domain. Please try again.');
-          }
-      
-          return false;
-      }
         
         /*********** command processing ***********/
         

@@ -342,12 +342,6 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
   else if (!strcmp(variable, "refreshVal")) refreshVal = intVal; 
   else if (!strcmp(variable, "formatIfMountFailed")) formatIfMountFailed = (bool)intVal;
   else if (!strcmp(variable, "resetLog")) reset_log(); 
-  else if (!strcmp(variable, "addBlockDomain")){
-    char addDomain[64] = "";
-    strncpy(addDomain, value, FILE_NAME_LEN-1);
-    addDomain[sizeof(addDomain) - 1] = '\0';
-    add_block_domain(addDomain);
-  } 
   else if (!strcmp(variable, "clear")) savePrefs(false); // /control?clear=1
   else if (!strcmp(variable, "deldata")) {  
     if (intVal) deleteFolderOrFile(DATA_DIR); // entire folder
