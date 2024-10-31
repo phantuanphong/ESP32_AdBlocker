@@ -53,7 +53,7 @@ char Auth_Pass[MAX_PWD_LEN] = "";
 
 int responseTimeoutSecs = 10; // time to wait for FTP or SMTP response
 bool allowAP = true;  // set to true to allow AP to startup if cannot connect to STA (router)
-uint32_t wifiTimeoutSecs = 60; // how often to check wifi status
+uint32_t wifiTimeoutSecs = 30; // how often to check wifi status
 static bool APstarted = false;
 esp_ping_handle_t pingHandle = NULL;
 bool usePing = true;
@@ -255,12 +255,18 @@ void resetWatchDog() {
 static void statusCheck() {
   // regular status checks
   doAppPing();
-  if (!timeSynchronized) getLocalNTP();
-  if (!dataFilesChecked) dataFilesChecked = checkDataFiles();
+  syncTimeAndPortal();
 #if INCLUDE_MQTT
   if (mqtt_active) startMqttClient();
 #endif
 }
+
+
+void syncTimeAndPortal(){
+  if (!timeSynchronized) getLocalNTP();
+  if (!dataFilesChecked) dataFilesChecked = checkDataFiles();
+}
+
 
 void resetCrashLoop() {
   crashLoop = 0;

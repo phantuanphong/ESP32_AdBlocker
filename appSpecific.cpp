@@ -134,7 +134,7 @@ static void extractBlocklist() {
   }                
 }
                                                                 
-static bool downloadBlockList(const char* fileURL) {
+static bool downloadBlockList(const char* hostURL) {
   // download blocklist file from web
   bool res = false;
   WiFiClientSecure wclient;
@@ -143,8 +143,8 @@ static bool downloadBlockList(const char* fileURL) {
     size_t downloadSize = 0;
     char progStr[10];
 
-    if (https.begin(wclient, fileURL)) {
-      LOG_INF("Downloading %s\n", fileURL);
+    if (https.begin(wclient, hostURL)) {
+      LOG_INF("Downloading %s\n", hostURL);
       int httpCode = https.GET();
       if (httpCode > 0) {
         uint32_t loadTime = millis();
@@ -203,7 +203,7 @@ static bool downloadBlockList(const char* fileURL) {
     } else {
       char errBuf[100] = {0};
       wclient.lastError(errBuf, 100);
-      LOG_ERR("Could not connect to %s, err: %s", fileURL, errBuf);
+      LOG_ERR("Could not connect to %s, err: %s", hostURL, errBuf);
     }
     https.end();
   } 
@@ -271,6 +271,7 @@ void appSetup() {
   allowCnt = blockCnt = 0;
   updateConfigVect("blockCnt", "0");
   updateConfigVect("allowCnt", "0");
+  syncTimeAndPortal();
   loadBlockList("Initial");
   loadMyBlockList("Initial");
   prepDNS();

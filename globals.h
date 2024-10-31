@@ -98,7 +98,8 @@ void appSpecificTelegramTask(void* p);
 void buildAppJsonString(bool filter);
 bool updateAppStatus(const char* variable, const char* value, bool fromUser = true);
 
-// global general utility functions in utils.cpp / utilsFS.cpp / peripherals.cpp    
+// global general utility functions in utils.cpp / utilsFS.cpp / peripherals.cpp
+void syncTimeAndPortal();    
 void buildJsonString(uint8_t filter);
 bool calcProgress(int progressVal, int totalVal, int percentReport, uint8_t &pcProgress);
 bool changeExtension(char* fileName, const char* newExt);
