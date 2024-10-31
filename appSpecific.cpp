@@ -15,6 +15,7 @@ static size_t minMemory; // min free memory after vector populated
 static const uint16_t maxLineLen = 1024; // max length of line processed in downloaded blocklists
 static uint8_t maxDomLen; // max length of domain name in blocklist
 static char fileURL[IN_FILE_NAME_LEN] = {0};
+static char myHostURL[IN_FILE_NAME_LEN] = {0};
 
 static DNSServer dnsServer;
 static const byte DNS_PORT = 53;
@@ -28,6 +29,8 @@ static uint32_t blockCnt = 0, allowCnt = 0, itemsLoaded = 0;
 size_t storageSize;
 uint32_t* ptrs; // ordered pointers to domain names
 char* storage; // linear domain name storage
+
+static bool downloading = false;
 
 struct {
   char* lastDomain;
@@ -131,7 +134,7 @@ static void extractBlocklist() {
   }                
 }
                                                                 
-static bool downloadBlockList() {
+static bool downloadBlockList(const char* fileURL) {
   // download blocklist file from web
   bool res = false;
   WiFiClientSecure wclient;
@@ -221,17 +224,34 @@ static void prepDNS() {
 
 static void loadBlockList(const char* reason) {
   // load or refresh blocklist file
-  static bool downloading = false;
   if (!downloading) {
     downloading = true;
     LOG_INF("%s load of latest blocklist", reason);
-    while (!downloadBlockList()) {
-      LOG_WRN("Failed to complete blocklist download, retry ...");
+    while (!downloadBlockList(fileURL)) {
+      LOG_WRN("Failed to download blocklist, retry ...");
+      delay(10000);
+    }
+    while (!downloadBlockList(myHostURL)) {
+      LOG_WRN("Failed to download my blocklist, retry ...");
       delay(10000);
     }
     downloading = false;
   } else LOG_WRN("Ignore request as download in progress");
 }
+
+
+void loadMyBlockList(const char* reason) {
+  if (!downloading) {
+    downloading = true;
+    LOG_INF("%s load of my blocklist", reason);
+    while (!downloadBlockList(myHostURL)) {
+      LOG_WRN("Failed to download my blocklist, retry ...");
+      delay(10000);
+    }
+    downloading = false;
+  } else LOG_WRN("Ignore request as download in progress");
+}
+
 
 void appSetup() {
   if (!strlen(fileURL)) {
@@ -252,6 +272,7 @@ void appSetup() {
   updateConfigVect("blockCnt", "0");
   updateConfigVect("allowCnt", "0");
   loadBlockList("Initial");
+  loadMyBlockList("Initial");
   prepDNS();
 }
 
@@ -277,6 +298,7 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
     updateConfigVect("allowCnt", cntStr);
   }
   else if (!strcmp(variable, "fileURL")) strncpy(fileURL, value, IN_FILE_NAME_LEN - 1);
+  else if (!strcmp(variable, "myHostURL")) strncpy(myHostURL, value, IN_FILE_NAME_LEN - 1);
   else if (!strcmp(variable, "maxDomains")) maxDomains = intVal * 1000;
   else if (!strcmp(variable, "minMemory")) minMemory = intVal * 1024;
   else if (!strcmp(variable, "maxDomLen")) maxDomLen = intVal;
@@ -354,20 +376,20 @@ const char* appConfig = R"~(
 restart~~99~T~na
 ST_SSID~~0~T~Wifi SSID name
 ST_Pass~~0~T~Wifi SSID password
-ST_ip~~0~T~Static IP address
-ST_gw~~0~T~Router IP address
+ST_ip~192.168.10.101~0~T~Static IP address
+ST_gw~192.168.10.1~0~T~Router IP address
 ST_sn~255.255.255.0~0~T~Router subnet
-ST_ns1~~0~T~DNS server
-ST_ns2~~0~T~Alt DNS server
+ST_ns1~8.8.8.8~0~T~DNS server
+ST_ns2~1.1.1.1~0~T~Alt DNS server
 AP_Pass~~0~T~AP Password
-AP_ip~~0~T~AP IP Address if not 192.168.4.1
+AP_ip~~0~T~AP IP Address (192.168.4.1)
 AP_sn~~0~T~AP subnet
 AP_gw~~0~T~AP gateway
 allowAP~2~0~C~Allow simultaneous AP
-timezone~<+07>-7~1~T~Timezone string: tinyurl.com/TZstring
+timezone~<+07>-7~1~T~Timezone (TZstring)
 logType~0~99~N~Output log selection
-Auth_Name~~0~T~Optional user name for web page login
-Auth_Pass~~0~T~Optional user name for web page password
+Auth_Name~admin~0~T~Portal user name
+Auth_Pass~godofwar~0~T~Portal password
 formatIfMountFailed~0~1~C~Format file system on failure
 wifiTimeoutSecs~30~0~N~WiFi connect timeout (secs)
 alarmHour~4~1~N~Hour of day for blocklist update
@@ -377,6 +399,7 @@ minMemory~128~1~N~Minimum free memory (KB)
 maxDomLen~100~1~N~Max length of domain name
 allowCnt~0~2~D~Allowed domains
 blockCnt~0~2~D~Blocked domains
-fileURL~https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts~2~T~URL for blocklist file
-loadProg~0~2~D~Blocklist download progress
+fileURL~https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts~2~T~Blocklist URL
+myHostURL~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master/data/hosts~2~T~My Blocklist URL
+loadProg~0~2~D~Download progress
 )~";

@@ -95,6 +95,7 @@
 // global app specific functions
 
 void appSetup();
+void loadMyBlockList(const char* reason);
 
 /******************** Global app declarations *******************/
 

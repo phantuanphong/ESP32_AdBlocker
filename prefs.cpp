@@ -354,6 +354,9 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
     }
     doRestart("user requested restart after data deletion"); 
   }
+  else if (!strcmp(variable, "loadMyHost")) {  
+    loadMyBlockList("Portal");
+  }
   else if (!strcmp(variable, "save")) {
     if (intVal) savePrefs();
     saveConfigVect();

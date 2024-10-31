@@ -132,8 +132,14 @@
       }
       
       .grid-cols3 {
-        grid-template-columns: calc(var(--buttonSize) * 14) calc(var(--buttonSize) * 12) calc(var(--buttonSize) * 12);
-        gap: var(--buttonSize);
+        display: grid; /* Ensure display is set here if not already */
+        grid-template-columns: repeat(3, 1fr);  /* Use 3 equal columns that take full viewport width */
+        gap: var(--buttonSize);  /* Keep the gap as defined */
+        width: 100%; /* Ensures the grid takes full width of the parent container */
+      }
+
+      .grid-cols3 div {
+          width: 100%; /* Ensures each button (div) takes full width */
       }
 
       .grid-cols4 {
@@ -400,8 +406,8 @@
       }
       
       .svgCols {
-        width: calc(var(--buttonSize) * 9);  
-        height: calc(var(--buttonSize) * 2.5);  
+        width: calc(var(--buttonSize) * 6.5);  
+        height: calc(var(--buttonSize) * 2.3);  
         fill: var(--buttonLabel);
         font-size: calc(var(--buttonSize) * 1.5);
       }   
@@ -416,6 +422,10 @@
       
       .midText {
         transform: translate(50%,50%); 
+        dominant-baseline: middle;
+        text-anchor: middle;
+        text-align: center;
+        pointer-events: none;
       }
       
     </style>
@@ -428,7 +438,9 @@
       <button class="tablinks" name="EditConfig">Config</button>
       <a href="/web?OTA.htm"><button class="tablinks">Update</button></a>
     </div>
-    <br><br><br>
+
+    <br>
+
     <div id="AdBlocker" class="tabcontent" style="display:block">
       <div>
         <p class='config-group' id="Main012"></p>
@@ -436,11 +448,10 @@
     </div>
 
     <div id="ShowLog" class="tabcontent">
-      <br>
       <div>
-        <div class="input-group" style="grid-column: span 2">
+        <div >
           <fieldset> 
-          <legend id="selectLog">Select Log</legend> 
+          <legend id="selectLog">Log Setting</legend> 
           <div>
             <label title="Display RTC RAM log" for="rtcram">RTC RAM</label>
             <input class="local" id="rtcram" type="radio" name="logType" value="0" checked>
@@ -464,17 +475,25 @@
             <tr>
               <td>
                 <div>
-                  <svg>
+                  <svg class="svgCols">
                     <rect class="buttonRect" tabindex="0"/>
-                    <text class="local" id="refreshLog">Refresh Log</text>
+                    <text class="midText" id="refreshLog">Refresh Log</text>
                   </svg>
                 </div>
               </td>
               <td>
                 <div>
-                  <svg>
+                  <svg class="svgCols">
                     <rect class="buttonRect" tabindex="0"/>
-                    <text class="local" id="clearLog">Clear Log</text>
+                    <text class="midText" id="clearLog">Clear Log</text>
+                  </svg>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <svg class="svgCols">
+                    <rect class="buttonRect" tabindex="0"/>
+                    <text class="midText" id="loadMyHost">Load My Host</text>
                   </svg>
                 </div>
               </td>
@@ -487,51 +506,56 @@
     </div>
     
     <div id="EditConfig" class="tabcontent">
+      <div >
+        <fieldset> 
+        <legend>Control</legend> 
+        <div class="grid-cols3">
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text id="reset" class="midText">Reboot</text>
+            </svg>
+          </div>
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text id="factory" class="midText">Factory Reset</text>
+            </svg>
+          </div>
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text id="clear" class="midText">Clear NVS</text>
+            </svg>
+          </div>
+        </div>
+        </fieldset>
+      </div>
       <br>
-      <div class="header">Control</div>
-      <br>
-      <div class="grid-cols3">
-        <div>
-          <svg class="svgCols">
-            <rect class="buttonRect" tabindex="0"/>
-            <text id="reset" class="midText">Reboot</text>
-          </svg>
+      <div >
+        <fieldset> 
+        <legend>Settings</legend> 
+        <div class="grid-cols3">
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text id="wifi" class="midText">Wifi</text>
+            </svg>
+          </div>
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text id="settings" class="midText">Settings</text>
+            </svg>
+          </div>
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text id="save" class="midText">Save</text>
+            </svg>
+          </div>
         </div>
-        <div>
-          <svg class="svgCols">
-            <rect class="buttonRect" tabindex="0"/>
-            <text id="deldata" class="midText">Reload /data</text>
-          </svg>
-        </div>
-        <div>
-          <svg class="svgCols">
-            <rect class="buttonRect" tabindex="0"/>
-            <text id="clear" class="midText">Clear NVS</text>
-          </svg>
-        </div>
-        <div class="cfgTitle">
-          <br>
-          <div class="header">Settings</div>
-          <br>
-        </div>
-        <div>
-          <svg class="svgCols">
-            <rect class="buttonRect" tabindex="0"/>
-            <text id="wifi" class="midText">Wifi</text>
-          </svg>
-        </div>
-        <div>
-          <svg class="svgCols">
-            <rect class="buttonRect" tabindex="0"/>
-            <text id="settings" class="midText">Settings</text>
-          </svg>
-        </div>
-        <div>
-          <svg class="svgCols">
-            <rect class="buttonRect" tabindex="0"/>
-      	    <text id="save" class="midText">Save</text>
-          </svg>
-        </div>
+        </fieldset>
       </div>
       <div>
         <p class='config-group' id='Cfg'></p>
@@ -559,6 +583,7 @@
             document.title = value;
             if (fromUser) sendControl(key, value);
           }
+          else if (key == "factory") factoryReset();
           else if (key == "alertMsg") showAlert(value);
           else if (key == "clearLog") clearLog();
           else if (key == "refreshLog") getLog();

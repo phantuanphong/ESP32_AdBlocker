@@ -354,6 +354,14 @@
             if (logType != 1) sendControl("resetLog", "1");
           }
         }
+
+
+        function factoryReset() {
+          if (window.confirm('This will delete all data and reset. Are you sure ?')) { 
+            sendControl("deldata", "1");
+          }
+        }
+
         
         async function getLog() {
           // request display of stored log file
