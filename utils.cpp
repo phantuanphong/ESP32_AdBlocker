@@ -52,7 +52,7 @@ char Auth_Name[MAX_HOST_LEN] = "";
 char Auth_Pass[MAX_PWD_LEN] = "";
 
 int responseTimeoutSecs = 10; // time to wait for FTP or SMTP response
-bool allowAP = false;  // set to true to allow AP to startup if cannot connect to STA (router)
+bool allowAP = true;  // set to true to allow AP to startup if cannot connect to STA (router)
 uint32_t wifiTimeoutSecs = 60; // how often to check wifi status
 static bool APstarted = false;
 esp_ping_handle_t pingHandle = NULL;
