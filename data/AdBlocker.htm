@@ -573,7 +573,11 @@
             document.title = value;
             if (fromUser) sendControl(key, value);
           }
-          else if (key == "factory") factoryReset();
+          else if (key == "factory") {          
+              if (window.confirm('This will delete all data and reset. Are you sure ?')) { 
+              sendControl("deldata", "1");
+            }
+          }
           else if (key == "alertMsg") showAlert(value);
           else if (key == "clearLog") clearLog();
           else if (key == "refreshLog") getLog();
