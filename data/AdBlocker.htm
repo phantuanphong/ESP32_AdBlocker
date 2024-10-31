@@ -320,8 +320,8 @@
 
       /* static part */
       .switch .slider {
-          width: calc(var(--buttonSize) * 2.6);  /* Slightly reduced width for better proportion */
-          height: calc(var(--buttonSize) * 1.4);  /* Increased height for better clickable area */
+          width: calc(var(--buttonSize) * 2.5);  /* Slightly reduced width for better proportion */
+          height: calc(var(--buttonSize) * 1.3);  /* Increased height for better clickable area */
           background: var(--itemInactive);
           position: relative;
           display: inline-block;
@@ -337,19 +337,19 @@
   /* moving part */
       .switch .slider::before {
           content: "";
-          height: calc(var(--buttonSize) * 1.2);  /* Slightly smaller than container */
-          width: calc(var(--buttonSize) * 1.2);
+          height: calc(var(--buttonSize));  /* Slightly smaller than container */
+          width: calc(var(--buttonSize) );
           background: var(--inputBackground);
           position: absolute;
           top: 50%;  /* Center vertically */
-          left: calc(var(--buttonQuart) * 2);  /* Adjusted starting position */
+          left: calc(var(--buttonQuart) * 2.5);  /* Adjusted starting position */
           border-radius: 50%;  /* Perfect circle */
           transition: transform 0.3s ease;  /* Smoother transition */
           transform: translate(-50%, -50%);  /* Center horizontally and vertically */
       }
 
       .switch input[type="checkbox"]:checked + .slider::before {
-          transform: translate(calc(var(--buttonSize) ), -50%);  /* Adjusted travel distance */
+          transform: translate(calc(var(--buttonSize) * 0.75 ), -50%);  /* Adjusted travel distance */
       }
 
       
@@ -470,36 +470,26 @@
         <br>
         <br>
         <br>
-        <table class="grid-cols2">
-          <tbody>
-            <tr>
-              <td>
-                <div>
-                  <svg class="svgCols">
-                    <rect class="buttonRect" tabindex="0"/>
-                    <text class="midText" id="refreshLog">Refresh Log</text>
-                  </svg>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <svg class="svgCols">
-                    <rect class="buttonRect" tabindex="0"/>
-                    <text class="midText" id="clearLog">Clear Log</text>
-                  </svg>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <svg class="svgCols">
-                    <rect class="buttonRect" tabindex="0"/>
-                    <text class="midText" id="loadMyHost">Load My Host</text>
-                  </svg>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="grid-cols3">
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text class="midText" id="refreshLog">Refresh Log</text>
+            </svg>
+          </div>
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text class="midText" id="clearLog">Clear Log</text>
+            </svg>
+          </div>
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text class="midText" id="loadMyHost">My Host</text>
+            </svg>
+          </div>
+        </div>
       </div>
       <div id="appLog"></div>
       <br>
@@ -519,7 +509,7 @@
           <div>
             <svg class="svgCols">
               <rect class="buttonRect" tabindex="0"/>
-              <text id="factory" class="midText">Factory Reset</text>
+              <text id="factory" class="midText">Factory</text>
             </svg>
           </div>
           <div>
