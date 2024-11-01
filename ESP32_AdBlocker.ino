@@ -27,6 +27,7 @@ void setup() {
     if (loadConfig()) {
       if (psramFound()) {
         LOG_INF("PSRAM size: %s", fmtSize(ESP.getPsramSize()));
+        LOG_INF("PSRAM free: %s", fmtSize(ESP.getFreePsram()));
         if (ESP.getPsramSize() < 3 * ONEMEG) 
           snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Insufficient PSRAM for app");
       }
