@@ -366,7 +366,7 @@ char delFile[FILE_NAME_LEN];
     }
 
     // Delete AdBlocker.html
-    dlen = snprintf(delFile, FILE_NAME_LEN, "%s/AdBlocker.html", DATA_DIR);
+    dlen = snprintf(delFile, FILE_NAME_LEN, "%s/AdBlocker.htm", DATA_DIR);
     if (dlen > FILE_NAME_LEN) {
         LOG_WRN("File name AdBlocker.html too long");
     } else {
