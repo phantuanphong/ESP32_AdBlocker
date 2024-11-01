@@ -272,8 +272,8 @@ void appSetup() {
   updateConfigVect("blockCnt", "0");
   updateConfigVect("allowCnt", "0");
   syncTimeAndPortal();
-  loadBlockList("Initial");
-  loadMyBlockList("Initial");
+  //loadBlockList("Initial");
+  //loadMyBlockList("Initial");
   prepDNS();
 }
 

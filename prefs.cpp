@@ -354,8 +354,29 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
     }
     doRestart("user requested restart after data deletion"); 
   }
+  else if (!strcmp(variable, "updatePortal")) {  
+char delFile[FILE_NAME_LEN];
+
+    // Delete common.js
+    int dlen = snprintf(delFile, FILE_NAME_LEN, "%s/common.js", DATA_DIR);
+    if (dlen > FILE_NAME_LEN) {
+        LOG_WRN("File name common.js too long");
+    } else {
+        deleteFolderOrFile(delFile);
+    }
+
+    // Delete AdBlocker.html
+    dlen = snprintf(delFile, FILE_NAME_LEN, "%s/AdBlocker.html", DATA_DIR);
+    if (dlen > FILE_NAME_LEN) {
+        LOG_WRN("File name AdBlocker.html too long");
+    } else {
+        deleteFolderOrFile(delFile);
+    }
+
+    checkDataFiles();
+  }
   else if (!strcmp(variable, "loadMyHost")) {  
-    loadMyBlockList("Portal");
+    loadMyBlockList("Manual");
   }
   else if (!strcmp(variable, "save")) {
     if (intVal) savePrefs();

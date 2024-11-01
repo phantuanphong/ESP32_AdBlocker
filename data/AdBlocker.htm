@@ -142,9 +142,15 @@
           width: 100%; /* Ensures each button (div) takes full width */
       }
 
+      .grid-cols4 div {
+          width: 100%; /* Ensures each button (div) takes full width */
+      }
+
       .grid-cols4 {
-          grid-template-columns: calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10) calc(var(--buttonSize) * 10);
-          gap: var(--buttonSize);
+        display: grid; /* Ensure display is set here if not already */
+        grid-template-columns: repeat(4, 1fr);  /* Use 3 equal columns that take full viewport width */
+        gap: var(--buttonSize);  /* Keep the gap as defined */
+        width: 100%; /* Ensures the grid takes full width of the parent container */
       }
 
       .grid-cols5 {
@@ -499,7 +505,7 @@
       <div >
         <fieldset> 
         <legend>Control</legend> 
-        <div class="grid-cols3">
+        <div class="grid-cols4">
           <div>
             <svg class="svgCols">
               <rect class="buttonRect" tabindex="0"/>
@@ -516,6 +522,12 @@
             <svg class="svgCols">
               <rect class="buttonRect" tabindex="0"/>
               <text id="clear" class="midText">Clear NVS</text>
+            </svg>
+          </div>
+          <div>
+            <svg class="svgCols">
+              <rect class="buttonRect" tabindex="0"/>
+              <text id="updatePortal" class="midText">Update Portal</text>
             </svg>
           </div>
         </div>
