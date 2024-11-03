@@ -440,6 +440,7 @@ void buildJsonString(uint8_t filter) {
   *p = 0;
   *(--p) = '}'; // overwrite final comma
   if (p - jsonBuff >= JSON_BUFF_LEN) LOG_ERR("jsonBuff overrun by: %u bytes", (p - jsonBuff) - JSON_BUFF_LEN);
+  LOG_INF("Json response: %s", jsonBuff);
 }
 
 void initStatus(int cfgGroup, int delayVal) {
@@ -459,7 +460,7 @@ static bool checkConfigFile() {
     if (file) {
       // apply initial defaults
       file.write((uint8_t*)appConfig, strlen(appConfig));
-      sprintf(hostName, "%s_%012llX", APP_NAME, ESP.getEfuseMac());
+      //sprintf(hostName, "%s_%012llX", APP_NAME, ESP.getEfuseMac());
       char cfg[100];
       sprintf(cfg, "appId~%s~99~~na\n", APP_NAME);
       file.write((uint8_t*)cfg, strlen(cfg));

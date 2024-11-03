@@ -29,7 +29,7 @@ static void initBrownout(void);
 /** Do not hard code anything below here unless you know what you are doing **/
 /** Use the web interface to configure wifi settings **/
 
-char hostName[MAX_HOST_LEN] = ""; // Default Host name
+char hostName[MAX_HOST_LEN] = "AdBlocker"; // Default Host name
 char ST_SSID[MAX_HOST_LEN]  = ""; //Default router ssid
 char ST_Pass[MAX_PWD_LEN] = ""; //Default router passd
 
