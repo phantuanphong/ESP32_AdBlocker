@@ -297,6 +297,18 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
     updateConfigVect("blockCnt", cntStr);
     sprintf(cntStr, "%lu", allowCnt);
     updateConfigVect("allowCnt", cntStr);
+
+    // Tính toán trước khi cập nhật upTime
+    unsigned long hours = (upTimeMillis / (1000 * 60 * 60));
+    unsigned long minutes = (upTimeMillis / (1000 * 60)) % 60;
+    unsigned long seconds = (upTimeMillis / 1000) % 60;
+
+    // Định dạng upTime dưới dạng hh:mm:ss
+    char upTimeStr[20];
+    sprintf(upTimeStr, "%02lu:%02lu:%02lu", hours, minutes, seconds);
+
+    // Cập nhật upTime vào cấu hình
+    updateConfigVect("upTime", upTimeStr);
   }
   else if (!strcmp(variable, "fileURL")) strncpy(fileURL, value, IN_FILE_NAME_LEN - 1);
   else if (!strcmp(variable, "myHostURL")) strncpy(myHostURL, value, IN_FILE_NAME_LEN - 1);
@@ -403,4 +415,5 @@ blockCnt~0~2~D~Blocked domains
 fileURL~https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts~2~T~Blocklist URL
 myHostURL~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master/data/hosts~2~T~My Blocklist URL
 loadProg~0~2~D~Download progress
+upTime~~0~T~UpTime
 )~";
