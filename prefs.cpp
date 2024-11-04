@@ -440,7 +440,7 @@ void buildJsonString(uint8_t filter) {
   *p = 0;
   *(--p) = '}'; // overwrite final comma
   if (p - jsonBuff >= JSON_BUFF_LEN) LOG_ERR("jsonBuff overrun by: %u bytes", (p - jsonBuff) - JSON_BUFF_LEN);
-  LOG_INF("Json response: %s", jsonBuff);
+  //LOG_INF("Json response: %s", jsonBuff);
 }
 
 void initStatus(int cfgGroup, int delayVal) {

@@ -19,7 +19,10 @@
 
 #include "appGlobals.h"
 
+unsigned long upTimeMillis = 0;
+
 void setup() { 
+  upTimeMillis = millis();
   logSetup();
   // prep data storage
   if (startStorage()) {

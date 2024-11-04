@@ -298,17 +298,34 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
     sprintf(cntStr, "%lu", allowCnt);
     updateConfigVect("allowCnt", cntStr);
 
-    // Tính toán trước khi cập nhật upTime
-    unsigned long hours = (upTimeMillis / (1000 * 60 * 60));
-    unsigned long minutes = (upTimeMillis / (1000 * 60)) % 60;
-    unsigned long seconds = (upTimeMillis / 1000) % 60;
+    // Update upTimeMillis (this should be done continuously)
+    upTimeMillis = millis();
 
-    // Định dạng upTime dưới dạng hh:mm:ss
-    char upTimeStr[20];
-    sprintf(upTimeStr, "%02lu:%02lu:%02lu", hours, minutes, seconds);
+    // Tính toán số ngày, giờ, phút, giây từ upTimeMillis
+    unsigned long totalSeconds = upTimeMillis / 1000; // Chuyển đổi từ milliseconds sang seconds
+    unsigned long days = totalSeconds / (24 * 3600);
+    unsigned long hours = (totalSeconds % (24 * 3600)) / 3600;
+    unsigned long minutes = (totalSeconds % 3600) / 60;
+    unsigned long seconds = totalSeconds % 60;
+
+    char upTimeStr[50];
+    if (days > 0)
+    {
+      sprintf(upTimeStr, "%lu day%s %02lu:%02lu:%02lu", days, (days == 1) ? "" : "s", hours, minutes, seconds);
+    }
+    else
+    {
+      sprintf(upTimeStr, "%02lu:%02lu:%02lu", hours, minutes, seconds); // Chỉ hiển thị hh:mm:ss
+    }
 
     // Cập nhật upTime vào cấu hình
     updateConfigVect("upTime", upTimeStr);
+
+    // Đọc và cập nhật nhiệt độ CPU
+    float cpuTemp = temperatureRead();
+    char tempStr[15]; // Tăng kích thước buffer để chứa thêm °C
+    sprintf(tempStr, "%.1f°C", cpuTemp);
+    updateConfigVect("cpuTemp", tempStr);
   }
   else if (!strcmp(variable, "fileURL")) strncpy(fileURL, value, IN_FILE_NAME_LEN - 1);
   else if (!strcmp(variable, "myHostURL")) strncpy(myHostURL, value, IN_FILE_NAME_LEN - 1);
@@ -412,8 +429,9 @@ minMemory~128~1~N~Minimum free memory (KB)
 maxDomLen~100~1~N~Max length of domain name
 allowCnt~0~2~D~Allowed domains
 blockCnt~0~2~D~Blocked domains
-fileURL~https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts~2~T~Blocklist URL
-myHostURL~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master/data/hosts~2~T~My Blocklist URL
+fileURL~https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts~1~T~URL blocklist
+myHostURL~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master/data/hosts~1~T~URL my list
 loadProg~0~2~D~Download progress
-upTime~~0~T~UpTime
+upTime~~2~T~UpTime
+cpuTemp~~2~T~CPU Temperature
 )~";

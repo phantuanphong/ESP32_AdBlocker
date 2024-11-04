@@ -100,3 +100,5 @@ void loadMyBlockList(const char* reason);
 /******************** Global app declarations *******************/
 
 extern const char* appConfig;
+
+extern unsigned long upTimeMillis;
