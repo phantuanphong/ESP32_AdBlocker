@@ -327,8 +327,8 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
     sprintf(tempStr, "%.1f°C", cpuTemp);
     updateConfigVect("cpuTemp", tempStr);
   }
-  else if (!strcmp(variable, "fileURL")) strncpy(fileURL, value, IN_FILE_NAME_LEN - 1);
-  else if (!strcmp(variable, "myHostURL")) strncpy(myHostURL, value, IN_FILE_NAME_LEN - 1);
+  else if (!strcmp(variable, "urlBlockList")) strncpy(fileURL, value, IN_FILE_NAME_LEN - 1);
+  else if (!strcmp(variable, "urlMyList")) strncpy(myHostURL, value, IN_FILE_NAME_LEN - 1);
   else if (!strcmp(variable, "maxDomains")) maxDomains = intVal * 1000;
   else if (!strcmp(variable, "minMemory")) minMemory = intVal * 1024;
   else if (!strcmp(variable, "maxDomLen")) maxDomLen = intVal;
@@ -429,8 +429,8 @@ minMemory~128~1~N~Minimum free memory (KB)
 maxDomLen~100~1~N~Max length of domain name
 allowCnt~0~2~D~Allowed domains
 blockCnt~0~2~D~Blocked domains
-fileURL~https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts~1~T~URL blocklist
-myHostURL~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master/data/hosts~1~T~URL my list
+urlBlockList~https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts~1~T~Blocklist url
+urlMyList~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master/data/hosts~1~T~My url
 loadProg~0~2~D~Download progress
 upTime~~2~T~UpTime
 cpuTemp~~2~T~CPU Temperature
