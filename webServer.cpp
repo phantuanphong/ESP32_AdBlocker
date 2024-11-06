@@ -154,11 +154,7 @@ static esp_err_t webHandler(httpd_req_t* req) {
   urlDecode(variable);
 
   // check file extension to determine required processing before response sent to browser
-  if (!strcmp(variable, "OTA.htm")) {
-    // request for built in OTA page, if index html defective
-    httpd_resp_set_type(req, "text/html"); 
-    return httpd_resp_sendstr(req, otaPage_html);
-  } else if (!strcmp(HTML_EXT, variable+(strlen(variable)-strlen(HTML_EXT)))) {
+  if (!strcmp(HTML_EXT, variable+(strlen(variable)-strlen(HTML_EXT)))) {
     // any other html file
     httpd_resp_set_type(req, "text/html");
   } else if (!strcmp(JS_EXT, variable+(strlen(variable)-strlen(JS_EXT)))) {

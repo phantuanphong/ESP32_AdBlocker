@@ -302,7 +302,6 @@ extern uint16_t mlogEnd;
 extern bool timeSynchronized;
 extern bool monitorOpen; 
 extern const char* setupPage_html;
-extern const char* otaPage_html;
 extern SemaphoreHandle_t wsSendMutex;
 extern char startupFailure[];
 extern time_t currEpoch;

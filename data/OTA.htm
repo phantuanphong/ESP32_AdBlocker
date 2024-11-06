@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <title>OTA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html, body {
+        height: 100%;
+        width: 100%;
+      }
+
+      body {
+        font-family: Helvetica !important;
+        background: #181818;
+        color: WhiteSmoke;
+        font-size: 1rem;
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      h3 {
+        margin: 20px 0;
+      }
+
+      .back-link {
+        color: WhiteSmoke;
+        text-decoration: none;
+        display: inline-block;
+        margin: 10px 0;
+      }
+
+      #upload_form {
+        width: 100%;
+      }
+
+      #otafile {
+        width: 100%;
+        max-width: 300px;
+        margin: 10px 0;
+      }
+
+      #progressOta {
+        width: 100%;
+        max-width: 300px;
+        height: 20px;
+        margin: 10px 0;
+        display: none;
+      }
+
+      #status, #loaded_n_total {
+        word-wrap: break-word;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Upload data file or bin file to ESP32</h3>
+      <form id="upload_form" enctype="multipart/form-data" method="post">
+        <input type="file" name="otafile" id="otafile" onchange="otaUploadFile()">
+        <progress id="progressOta" value="0" max="100"></progress>
+        <h4 id="status"></h4>
+        <p id="loaded_n_total"></p>
+      </form>
+      <br/>
+      <a href="javascript:history.back()" class="back-link">Go Back</a>
+    </div>
+    
+    <script>
+      const defaultPort = window.location.protocol == 'http:' ? 80 : 443; 
+      const webPort = !window.location.port ? defaultPort : window.location.port;
+      const webServer = window.location.protocol + '//' + document.location.hostname + ':' + webPort;
+      const $ = document.querySelector.bind(document);
+   
+      async function otaUploadFile() {
+        let file = $("#otafile").files[0];
+        const response = await fetch('/control?startOTA=' + file.name);
+        if (response.ok) {
+          // Show progress elements
+          $("#progressOta").style.display = "block";
+          $("#status").style.display = "block";
+          $("#loaded_n_total").style.display = "block";
+          
+          let xhr = new XMLHttpRequest();
+          xhr.upload.addEventListener("progress", progressHandler, false);
+          xhr.addEventListener("load", completeHandler, false);
+          xhr.addEventListener("error", errorHandler, false);
+          xhr.addEventListener("abort", abortHandler, false);
+          xhr.open("POST", webServer + '/upload');
+          xhr.send(file);
+        } else alert(response.status + ": " + response.statusText); 
+      }
+
+      function progressHandler(event) {
+        $("#loaded_n_total").innerHTML = "Uploaded " + event.loaded + " of " + event.total + " bytes";
+        let percent = (event.loaded / event.total) * 100;
+        $("#progressOta").value = Math.round(percent);
+        $("#status").innerHTML = Math.round(percent) + "% transferred";
+        if (event.loaded == event.total) $("#status").innerHTML = 'Uploaded, wait for completion result';
+      }
+
+      function completeHandler(event) {
+        $("#status").innerHTML = event.target.responseText;
+        $("#progressOta").value = 0;
+      }
+
+      function errorHandler(event) {
+        $("#status").innerHTML = "Upload Failed";
+        $("#progressOta").value = 0;
+      }
+
+      function abortHandler(event) {
+        $("#status").innerHTML = "Upload Aborted";
+        $("#progressOta").value = 0;
+      }
+    </script>
+  </body>
+</html>
