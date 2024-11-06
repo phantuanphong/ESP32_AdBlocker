@@ -163,8 +163,12 @@ static esp_err_t webHandler(httpd_req_t* req) {
     httpd_resp_set_type(req, "text/html");
   } else if (!strcmp(JS_EXT, variable+(strlen(variable)-strlen(JS_EXT)))) {
     // any js file
+    // httpd_resp_set_type(req, "text/javascript");
+    // httpd_resp_set_hdr(req, "Cache-Control", "public, max-age=604800");
     httpd_resp_set_type(req, "text/javascript");
-    httpd_resp_set_hdr(req, "Cache-Control", "public, max-age=604800");
+    httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");  // Không cache
+    httpd_resp_set_hdr(req, "Pragma", "no-cache");  // Đối với HTTP/1.0
+    httpd_resp_set_hdr(req, "Expires", "0");  // Đặt ngày hết hạn trước
   } else if (!strcmp(CSS_EXT, variable+(strlen(variable)-strlen(CSS_EXT)))) {
     // any css file
     httpd_resp_set_type(req, "text/css");
