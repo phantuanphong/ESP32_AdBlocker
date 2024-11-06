@@ -21,8 +21,6 @@
 
 unsigned long upTimeMillis = 0;
 
-// Define the pin numbers for the RGB LED
-const int redPin = 2;    // Red pin
 // Task handles
 TaskHandle_t indicatorTaskHandle;
 
@@ -74,7 +72,7 @@ void loop() {
 void startLedIndicator(){
   if (indicatorTaskHandle == NULL){
     LOG_INF("Start led indicator");
-    xTaskCreate(blinkRed, "Blink Red", 1000, NULL, 1, &indicatorTaskHandle);
+    xTaskCreate(blinkRed, "Blink Red", 2048, NULL, 1, &indicatorTaskHandle);
   }
 }
 
@@ -90,11 +88,12 @@ void stopLedIndicator() {
 
 // Function to blink the red LED
 void blinkRed(void *parameter) {
-  pinMode(redPin, OUTPUT);
+#ifdef RGB_BUILTIN
   while (true) {
-    digitalWrite(redPin, HIGH);
-    vTaskDelay(300 / portTICK_PERIOD_MS);
-    digitalWrite(redPin, LOW);
-    vTaskDelay(5000 / portTICK_PERIOD_MS);
+    neopixelWrite(RGB_BUILTIN,5,0,0);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    neopixelWrite(RGB_BUILTIN,0,0,0);
+    vTaskDelay(10000 / portTICK_PERIOD_MS);
   }
+#endif
 }
