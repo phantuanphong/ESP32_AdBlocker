@@ -57,6 +57,7 @@ uint32_t wifiTimeoutSecs = 30; // how often to check wifi status
 static bool APstarted = false;
 esp_ping_handle_t pingHandle = NULL;
 bool usePing = true;
+bool ledIndicator = false;
 
 static void startPing();
 

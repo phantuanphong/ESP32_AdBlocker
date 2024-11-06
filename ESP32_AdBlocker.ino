@@ -21,6 +21,12 @@
 
 unsigned long upTimeMillis = 0;
 
+// Define the pin numbers for the RGB LED
+const int redPin = 2;    // Red pin
+// Task handles
+TaskHandle_t indicatorTaskHandle;
+
+
 void setup() { 
   upTimeMillis = millis();
   logSetup();
@@ -52,6 +58,10 @@ void setup() {
     appSetup();
     checkMemory();
   }
+
+  if (ledIndicator){
+    startLedIndicator();
+  }
 }
 
 void loop() {
@@ -59,4 +69,32 @@ void loop() {
   LOG_INF("=============== Total tasks: %u ===============\n", uxTaskGetNumberOfTasks() - 1);
   delay(1000);
   vTaskDelete(NULL); // free 8k ram
+}
+
+void startLedIndicator(){
+  if (indicatorTaskHandle == NULL){
+    LOG_INF("Start led indicator");
+    xTaskCreate(blinkRed, "Blink Red", 1000, NULL, 1, &indicatorTaskHandle);
+  }
+}
+
+// Function to delete the red task
+void stopLedIndicator() {
+  if (indicatorTaskHandle != NULL) {
+    LOG_INF("Stop led indicator");
+    vTaskDelete(indicatorTaskHandle); // Delete the red blinking task
+    indicatorTaskHandle = NULL; // Clear the handle
+  }
+}
+
+
+// Function to blink the red LED
+void blinkRed(void *parameter) {
+  pinMode(redPin, OUTPUT);
+  while (true) {
+    digitalWrite(redPin, HIGH);
+    vTaskDelay(300 / portTICK_PERIOD_MS);
+    digitalWrite(redPin, LOW);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+  }
 }

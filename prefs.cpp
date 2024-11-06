@@ -326,6 +326,14 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
   else if (!strcmp(variable, "responseTimeoutSecs")) responseTimeoutSecs = intVal;
   else if (!strcmp(variable, "wifiTimeoutSecs")) wifiTimeoutSecs = intVal;
   else if (!strcmp(variable, "usePing")) usePing = (bool)intVal;
+  else if (!strcmp(variable, "ledIndicator")){
+    ledIndicator = (bool)intVal;
+    if (ledIndicator){
+      startLedIndicator();
+    }else{
+      stopLedIndicator();
+    }
+  }
   else if (!strcmp(variable, "dbgVerbose")) {
     dbgVerbose = (intVal) ? true : false;
     Serial.setDebugOutput(dbgVerbose);

@@ -434,4 +434,5 @@ urlMyList~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master
 loadProg~0~2~D~Download progress
 upTime~~2~T~UpTime
 cpuTemp~~2~T~CPU Temperature
+ledIndicator~1~0~C~Led indicator
 )~";

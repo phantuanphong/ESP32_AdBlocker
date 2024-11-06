@@ -96,6 +96,8 @@
 
 void appSetup();
 void loadMyBlockList(const char* reason);
+void startLedIndicator();
+void stopLedIndicator();
 
 /******************** Global app declarations *******************/
 

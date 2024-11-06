@@ -238,6 +238,7 @@ extern bool doGetExtIP;
 extern bool usePing; // set to false if problems related to this issue occur: https://github.com/s60sc/ESP32-CAM_MJPEG2SD/issues/221
 extern bool wsLog;
 extern uint16_t sustainId;
+extern bool ledIndicator;
 
 // remote file server
 extern char fsServer[];
