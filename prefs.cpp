@@ -350,10 +350,16 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
   else if (!strcmp(variable, "refreshVal")) refreshVal = intVal; 
   else if (!strcmp(variable, "formatIfMountFailed")) formatIfMountFailed = (bool)intVal;
   else if (!strcmp(variable, "resetLog")) reset_log(); 
-  else if (!strcmp(variable, "clear")) savePrefs(false); // /control?clear=1
+  else if (!strcmp(variable, "clear")) savePrefs(false);
+  else if (!strcmp(variable, "factory")){
+      deleteFolderOrFile(DATA_DIR);
+      savePrefs(false);
+      doRestart("Factory reset"); 
+  }
   else if (!strcmp(variable, "deldata")) {  
-    if (intVal) deleteFolderOrFile(DATA_DIR); // entire folder
-    else {
+    if (intVal) {
+      deleteFolderOrFile(DATA_DIR);
+    }else {
       // manually specified file, eg control?deldata=favicon.ico
       char delFile[FILE_NAME_LEN];
       int dlen = snprintf(delFile, FILE_NAME_LEN, "%s/%s", DATA_DIR, value);
