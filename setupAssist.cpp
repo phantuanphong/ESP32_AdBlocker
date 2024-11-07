@@ -110,7 +110,6 @@ function Config(){
         <button type="button" onClick="return Config()">Connect</button>&nbsp;<button type="button" onclick="window.location.reload;">Cancel</button>
     </td></tr>
   </table>
-  <br/><br/><a href="/web?OTA.htm"><button>OTA Update</button></a>
 </center>      
 </body>
 </html>
