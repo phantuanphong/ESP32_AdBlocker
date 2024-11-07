@@ -791,3 +791,48 @@
       }); 
       let deviceHubEl = document.getElementById('DeviceHub');
       if (deviceHubEl) hubObserver.observe(deviceHubEl);
+
+
+    ////////////////////// OTA //////////////////////////////////////
+   
+      async function otaUploadFile() {
+        let file = $("#otafile").files[0];
+        const response = await fetch('/control?startOTA=' + file.name);
+        if (response.ok) {
+          // Show progress elements
+          $("#progressOta").style.display = "block";
+          $("#status").style.display = "block";
+          $("#loaded_n_total").style.display = "block";
+          
+          let xhr = new XMLHttpRequest();
+          xhr.upload.addEventListener("progress", progressHandler, false);
+          xhr.addEventListener("load", completeHandler, false);
+          xhr.addEventListener("error", errorHandler, false);
+          xhr.addEventListener("abort", abortHandler, false);
+          xhr.open("POST", webServer + '/upload');
+          xhr.send(file);
+        } else alert(response.status + ": " + response.statusText); 
+      }
+
+      function progressHandler(event) {
+        $("#loaded_n_total").innerHTML = "Uploaded " + event.loaded + " of " + event.total + " bytes";
+        let percent = (event.loaded / event.total) * 100;
+        $("#progressOta").value = Math.round(percent);
+        $("#status").innerHTML = Math.round(percent) + "% transferred";
+        if (event.loaded == event.total) $("#status").innerHTML = 'Uploaded, wait for completion result';
+      }
+
+      function completeHandler(event) {
+        $("#status").innerHTML = event.target.responseText;
+        $("#progressOta").value = 0;
+      }
+
+      function errorHandler(event) {
+        $("#status").innerHTML = "Upload Failed";
+        $("#progressOta").value = 0;
+      }
+
+      function abortHandler(event) {
+        $("#status").innerHTML = "Upload Aborted";
+        $("#progressOta").value = 0;
+      }

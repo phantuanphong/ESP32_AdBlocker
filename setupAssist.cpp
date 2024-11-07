@@ -64,7 +64,7 @@ bool checkDataFiles() {
   if (strlen(GITHUB_PATH)) {
     res = wgetFile(COMMON_JS_PATH); 
     if (res) res = wgetFile(INDEX_PAGE_PATH); 
-    if (res) res = wgetFile(OTA_FILE_PATH); 
+    //if (res) res = wgetFile(OTA_FILE_PATH); 
     if (res) res = appDataFiles(); 
   } else res = true; // no download needed
   return res;

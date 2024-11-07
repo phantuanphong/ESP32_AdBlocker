@@ -440,6 +440,31 @@
         text-align: center;
         pointer-events: none;
       }
+
+
+      
+      #upload_form {
+        width: 100%;
+      }
+
+      #otafile {
+        width: 100%;
+        max-width: 300px;
+        margin: 10px 0;
+      }
+
+      #progressOta {
+        width: 100%;
+        max-width: 300px;
+        height: 20px;
+        margin: 10px 0;
+        display: none;
+      }
+
+      #status, #loaded_n_total {
+        word-wrap: break-word;
+        display: none;
+      }
       
     </style>
   </head>
@@ -449,7 +474,7 @@
       <button class="tablinks active" name="AdBlocker" id="mainTab">Main</button>
       <button class="tablinks" name="ShowLog">Monitor</button>
       <button class="tablinks" name="EditConfig">Config</button>
-      <a href="/web?OTA.htm"><button class="tablinks">Update</button></a>
+      <button class="tablinks" name="OTA">OTA</button>
     </div>
 
     <br>
@@ -570,6 +595,18 @@
         <p class='config-group' id='Cfg'></p>
       </div>
     </div>
+
+    <div id="OTA" class="tabcontent">
+      <div >
+        <h3>Upload data file or bin file to ESP32</h3>
+        <form id="upload_form" enctype="multipart/form-data" method="post">
+          <input type="file" name="otafile" id="otafile" onchange="otaUploadFile()">
+          <progress id="progressOta" value="0" max="100"></progress>
+          <h4 id="status"></h4>
+          <p id="loaded_n_total"></p>
+        </form>
+      </div>
+    </div>
            
     <div class="alertMsg">
       <span id="alertText"></span>
@@ -633,7 +670,7 @@
       const doCustomSync = false;
       const doHeartbeat = false;
 
-      const scriptFiles = ['/web?common.js', 'E:/PROJECT/Arduino/ESP32_AdBlocker/data/common.js']; 
+      const scriptFiles = ['/web?common.js', 'E:/PROJECT/Arduino/ESP32_AdBlocker/data/common.js', '/Users/phongphan/Project/other/ESP32_AdBlocker/data/common.js']; 
       for (let i = 0; i < scriptFiles.length; i++) {
         const scriptElement = document.createElement('script');
         scriptElement.src = scriptFiles[i];

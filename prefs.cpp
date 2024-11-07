@@ -365,7 +365,7 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
   else if (!strcmp(variable, "updatePortal")) {  
     deleteFolderOrFile(COMMON_JS_PATH);
     deleteFolderOrFile(INDEX_PAGE_PATH);
-    deleteFolderOrFile(OTA_FILE_PATH);
+    //deleteFolderOrFile(OTA_FILE_PATH);
     checkDataFiles();
   }
   else if (!strcmp(variable, "loadMyHost")) {  
