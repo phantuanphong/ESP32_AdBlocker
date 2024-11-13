@@ -298,6 +298,10 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
     sprintf(cntStr, "%lu", allowCnt);
     updateConfigVect("allowCnt", cntStr);
 
+    // total block domains
+    sprintf(cntStr, "%lu", itemsLoaded);
+    updateConfigVect("total", cntStr);
+
     // Update upTimeMillis (this should be done continuously)
     upTimeMillis = millis();
 
@@ -434,5 +438,6 @@ urlMyList~https://raw.githubusercontent.com/phantuanphong/ESP32_AdBlocker/master
 loadProg~0~2~D~Download progress
 upTime~~2~T~UpTime
 cpuTemp~~2~T~CPU Temperature
+total~0~2~D~Total domains
 ledIndicator~1~0~C~Led indicator
 )~";
