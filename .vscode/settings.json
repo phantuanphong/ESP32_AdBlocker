@@ -12,6 +12,7 @@
         "string_view": "cpp",
         "unordered_map": "cpp",
         "__config": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "cstddef": "cpp"
     }
 }
